@@ -208,5 +208,9 @@ public class catController : MonoBehaviour
             //use a grounded bool
             grounded = true;
         }
+        if (collision.gameObject.tag == "Crate")
+        {
+            Destroy(collision.gameObject);
+        }
     }
 }
