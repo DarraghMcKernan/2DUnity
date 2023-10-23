@@ -22,6 +22,8 @@ public class Crate : MonoBehaviour
             goingRight = false;
             boxRig.position = new Vector2(10.0f, boxRig.position.y);
         }
+
+        
     }
 
     // Update is called once per frame
@@ -34,6 +36,15 @@ public class Crate : MonoBehaviour
         if (goingRight == false)
         {
             boxRig.velocity = new Vector2(-1f - (difficulty * 1.5f), boxRig.velocity.y);
+        }
+
+        if (boxRig.position.x < -12.0f)
+        {
+            Destroy(this.gameObject);
+        }
+        if (boxRig.position.x > 12.0f)
+        {
+            Destroy(this.gameObject);
         }
     }
 }

@@ -6,21 +6,21 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     //example   
-    public int difficultyLevel;
+    public static int difficultyLevel;
     private void Awake()
     {
         //numtimes = 0;
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
+        //if (instance == null)
+        //{
+        //    instance = this;
+        //    DontDestroyOnLoad(gameObject);
 
-        }
-        else if (instance != this)
-        {
-            Destroy(gameObject);
+        //}
+        //else if (instance != this)
+        //{
+        //    Destroy(gameObject);
 
-        }
+        //}
     }
 
 }

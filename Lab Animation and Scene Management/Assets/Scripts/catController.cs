@@ -58,7 +58,6 @@ public class catController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         horizontalInput = Input.GetAxisRaw("Horizontal");
         // what do the below lines do ?
         if (horizontalInput > 0.001f)
@@ -90,11 +89,11 @@ public class catController : MonoBehaviour
 
         if (state == States.Idle && grounded == true)
         {
-            if (Input.GetKey(KeyCode.Space))
-            {
-                state = States.Jumping;
-                Debug.Log("Space Pressed");
-            }
+            //if (Input.GetKey(KeyCode.Space))
+            //{
+            //    state = States.Jumping;
+            //    Debug.Log("Space Pressed");
+            //}
             if (Input.GetKey(KeyCode.D))
             {
                 state = States.Running;
