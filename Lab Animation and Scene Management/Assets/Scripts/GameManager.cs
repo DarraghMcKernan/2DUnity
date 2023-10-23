@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     //example   
     public static int difficultyLevel;
-    public static int score;
+    public static int score = 0;
     public static int lives = 3;
 
     public TMP_Text scoreText;
@@ -19,11 +19,16 @@ public class GameManager : MonoBehaviour
     {
         scoreText.text = "Crates Smashed: " + score;
         livesText.text = "Lives: " + lives;
+        score = 0;
     }
 
     private void Update()
     {
-        scoreText.text = "Crates Smashed: " + score;
+        if(score >=0)
+        {
+            scoreText.text = "Crates Smashed: " + score;
+        }
+        
         livesText.text = "Lives: " + lives;
     }
 

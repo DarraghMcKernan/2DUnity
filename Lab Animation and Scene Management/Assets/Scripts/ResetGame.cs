@@ -8,5 +8,8 @@ public class ResetGame : MonoBehaviour
     public void restartButton()
     {
         SceneManager.LoadScene(2);
+        GameManager.difficultyLevel = 1;
+        GameManager.lives = 3;
+        GameManager.score = 0;
     }
 }
