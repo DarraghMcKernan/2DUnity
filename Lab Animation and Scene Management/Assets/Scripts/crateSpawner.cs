@@ -21,7 +21,7 @@ public class crateSpawner : MonoBehaviour
         spawnTimer--;
         if (spawnTimer < 0)
         {
-            spawnTimer = maxSpawnTimer - ((Crate.difficulty-1) * 100);
+            spawnTimer = maxSpawnTimer - ((Crate.difficulty-1) * 125);
             generateCrate();
         }
     }

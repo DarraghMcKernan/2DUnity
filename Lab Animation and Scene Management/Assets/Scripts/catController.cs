@@ -22,6 +22,8 @@ public class catController : MonoBehaviour
     public LayerMask groundLayer;
     float horizontalInput;
 
+    public int lives = 3;
+
     public float jumpVerticalPushOff;
     Vector2 savedlocalScale;
 
@@ -209,7 +211,18 @@ public class catController : MonoBehaviour
         }
         if (collision.gameObject.tag == "Crate")
         {
-            Destroy(collision.gameObject);
+            if(state == States.Sliding)
+            {
+                Destroy(collision.gameObject);
+                GameManager.score++;
+                Debug.Log("cat broke crate");
+            }
+            else
+            {
+                Destroy(collision.gameObject);
+                GameManager.lives--;
+                Debug.Log("crate hit cat");
+            }
         }
     }
 }
