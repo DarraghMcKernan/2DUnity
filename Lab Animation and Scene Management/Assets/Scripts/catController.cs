@@ -2,6 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum States
 {
@@ -10,7 +11,8 @@ public enum States
     Jumping = 2,
     Falling = 3,
     Sliding = 4,
-    Dead = 5
+    Dead = 5,
+    DeadFloor = 6
 }
 public class catController : MonoBehaviour
 {
@@ -36,6 +38,8 @@ public class catController : MonoBehaviour
     bool goingRight = true;
     private int slideCooldownTimer = 0;
     private int maxSlideCooldown = 150;
+
+    int deadTimer = 0;
 
     void Start()
     {
@@ -80,11 +84,11 @@ public class catController : MonoBehaviour
             }                
         }
 
-        if(grounded == true)
+        if (grounded == true && state < States.Dead)
         {
             state = States.Idle;
         }
-        if (currentSlideTimer > 0)
+        if (currentSlideTimer > 0 && state < States.Dead)
         {
             state = States.Sliding;
         }
@@ -187,10 +191,23 @@ public class catController : MonoBehaviour
 
         if (state == States.Dead)
         {
-
+            deadTimer-=1;
+            if(deadTimer <=0)
+            {
+                state = States.DeadFloor;
+            }
         }
 
-        rig.velocity = new Vector2(horizontalInput * horizonatlSpeed, rig.velocity.y);
+        if (state == States.DeadFloor)
+        {
+            deadTimer -= 1;
+            if (deadTimer <= -300)
+            {
+                SceneManager.LoadScene(4);
+            }
+        }
+
+            rig.velocity = new Vector2(horizontalInput * horizonatlSpeed, rig.velocity.y);
 
         anim.SetInteger("state", (int)state);
     }
@@ -205,9 +222,12 @@ public class catController : MonoBehaviour
     {
         if(collision.gameObject.tag == "ground")
         {
-            state = States.Idle;
-            //use a grounded bool
-            grounded = true;
+            if(state != States.Dead)
+            {
+                state = States.Idle;
+                //use a grounded bool
+                grounded = true;
+            }
         }
         if (collision.gameObject.tag == "Crate")
         {
@@ -222,6 +242,11 @@ public class catController : MonoBehaviour
                 Destroy(collision.gameObject);
                 GameManager.lives--;
                 Debug.Log("crate hit cat");
+                if (GameManager.lives <= 0)
+                {
+                    state = States.Dead;
+                    deadTimer = 90;
+                }
             }
         }
     }

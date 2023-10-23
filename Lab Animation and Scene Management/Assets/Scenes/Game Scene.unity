@@ -941,7 +941,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -992,7 +992,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -793.6, y: 467.39}
-  m_SizeDelta: {x: 911, y: 191.7}
+  m_SizeDelta: {x: 893.4, y: 219.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1552190753
 MonoBehaviour:
