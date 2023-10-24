@@ -827,6 +827,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreText: {fileID: 538360483}
   livesText: {fileID: 558855631}
+  healthPickup: {fileID: 5885858123494707752, guid: 26b7bb3dfd6827e4e93421bd60675569, type: 3}
 --- !u!1 &1531071204
 GameObject:
   m_ObjectHideFlags: 0
@@ -941,7 +942,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}

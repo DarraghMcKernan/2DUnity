@@ -192,7 +192,7 @@ public class catController : MonoBehaviour
         if (state == States.Dead)
         {
             deadTimer-=1;
-            if(deadTimer <=0)
+            if (deadTimer <= 0)
             {
                 state = States.DeadFloor;
             }
@@ -201,7 +201,7 @@ public class catController : MonoBehaviour
         if (state == States.DeadFloor)
         {
             deadTimer -= 1;
-            if (deadTimer <= -300)
+            if (deadTimer <= -900)
             {
                 SceneManager.LoadScene(4);
             }
@@ -229,23 +229,28 @@ public class catController : MonoBehaviour
                 grounded = true;
             }
         }
+        if (collision.gameObject.tag == "health")
+        {
+            Destroy(collision.gameObject);
+            GameManager.lives++;
+        }
         if (collision.gameObject.tag == "Crate")
         {
             if(state == States.Sliding)
             {
                 Destroy(collision.gameObject);
                 GameManager.score++;
-                Debug.Log("cat broke crate");
+                //Debug.Log("cat broke crate");
             }
             else
             {
                 Destroy(collision.gameObject);
                 GameManager.lives--;
-                Debug.Log("crate hit cat");
+                //ebug.Log("crate hit cat");
                 if (GameManager.lives <= 0)
                 {
                     state = States.Dead;
-                    deadTimer = 90;
+                    deadTimer = 900;
                 }
             }
         }

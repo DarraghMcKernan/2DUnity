@@ -38,11 +38,11 @@ public class Crate : MonoBehaviour
             boxRig.velocity = new Vector2(-1f - (difficulty * 1.5f), boxRig.velocity.y);
         }
 
-        if (boxRig.position.x < -12.0f)
+        if (boxRig.position.x < -10.0f)
         {
             Destroy(this.gameObject);
         }
-        if (boxRig.position.x > 12.0f)
+        if (boxRig.position.x > 10.0f)
         {
             Destroy(this.gameObject);
         }

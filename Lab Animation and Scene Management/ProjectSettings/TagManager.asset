@@ -6,6 +6,7 @@ TagManager:
   tags:
   - ground
   - Crate
+  - health
   layers:
   - Default
   - TransparentFX
