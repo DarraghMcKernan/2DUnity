@@ -30,4 +30,23 @@ public class BulletMover : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Zombie"))
+        {
+            Destroy(collision.gameObject);
+            Destroy(this.gameObject);
+        }
+        if (collision.gameObject.CompareTag("Student"))
+        {
+            Destroy(collision.gameObject);
+            Destroy(this.gameObject);
+        }
+        if (collision.gameObject.CompareTag("Player"))
+        {
+
+        }
+        else Destroy(this.gameObject);
+    }
 }
