@@ -10,12 +10,14 @@ public class StudentBehavior : MonoBehaviour
     public SeatSelector getSeat;
     Vector3 currentSeat;
     int classTimer = 0;
+    int timeBetweenClasses;
     // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
+        timeBetweenClasses = getSeat.timeBetweenClasses;
     }
 
     // Update is called once per frame
@@ -33,7 +35,7 @@ public class StudentBehavior : MonoBehaviour
         else
         {
             currentSeat = getSeat.takeSeat();
-            classTimer = 600;
+            classTimer = timeBetweenClasses;
         }
     }
 }

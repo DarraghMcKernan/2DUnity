@@ -20,12 +20,12 @@ public class seatHandler : MonoBehaviour
     public void takeSeat()
     {
         seatTaken = true;
-        Debug.Log("SeatTaken");
+        //Debug.Log("SeatTaken");
     }
     public void leaveSeat()
     {
         seatTaken = false;
-        Debug.Log("SeatLeft");
+        //Debug.Log("SeatLeft");
     }
 
 }

@@ -10,6 +10,9 @@ public class SeatSelector : MonoBehaviour
 
     private List<Transform> chairs = new List<Transform>();
 
+    public int classTimer = 0;
+    public int timeBetweenClasses = 600;
+
     void Start()
     {
         if (seatHolder == null)
@@ -34,6 +37,24 @@ public class SeatSelector : MonoBehaviour
                 myScript.seatTaken = false;
             }
         }
+
+        classTimer = timeBetweenClasses;
+    }
+
+    private void FixedUpdate()
+    {
+        if(classTimer > 0)
+        {
+            classTimer--;
+        }
+        else
+        {
+            classTimer = timeBetweenClasses;
+        }
+        if (classTimer == 50)
+        {
+            leaveAllSeats();
+        }
     }
 
     public Vector3 takeSeat()
@@ -49,13 +70,16 @@ public class SeatSelector : MonoBehaviour
         {
             int randomSeat = Random.Range(0, chairs.Count);
             seatHandler childScript = chairs[randomSeat].GetComponent<seatHandler>();
-            if (childScript.seatTaken == false)
+            if (childScript.seatTaken == true)
+            {
+                Debug.Log("Seat Taken Already");
+            }
+            else
             {
                 seatFound = true;
+                childScript.seatTaken = true;
                 foundSeatPos = chairs[randomSeat];
             }
-
-            return foundSeatPos.transform.position;
         }
         return foundSeatPos.transform.position;
     }
