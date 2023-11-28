@@ -72,7 +72,7 @@ public class SeatSelector : MonoBehaviour
             seatHandler childScript = chairs[randomSeat].GetComponent<seatHandler>();
             if (childScript.seatTaken == true)
             {
-                Debug.Log("Seat Taken Already");
+                //Debug.Log("Seat Taken Already");
             }
             else
             {
