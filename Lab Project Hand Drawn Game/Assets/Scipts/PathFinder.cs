@@ -1,11 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.GraphicsBuffer;
 
-public class NewBehaviourScript : MonoBehaviour
+public class PathFinder : MonoBehaviour
 {
-    [SerializeField] Transform targets;
+    //[SerializeField] Transform targets;
     Transform currentTarget;
     NavMeshAgent agent;
     RaycastHit2D[] results;
@@ -16,25 +19,64 @@ public class NewBehaviourScript : MonoBehaviour
         agent.updateRotation = false;
         agent.updateUpAxis = false;
 
-        results = new RaycastHit2D[5];
-        //currentTarget = targets.transform;
+        results = new RaycastHit2D[20];
+
+        //this.transform.position = new Vector3(UnityEngine.Random.Range(1.0f, 6.0f), UnityEngine.Random.Range(4.0f, 0.0f), 0);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        //Physics2D.CircleCast(Vector2 origin, float radius, Vector2 direction, ContactFilter2D contactFilter, RaycastHit2D[] results, float distance = Mathf.Infinity);
-        Physics2D.CircleCast(this.transform.position, 10f, new Vector2(0, 0), new ContactFilter2D(), results, 10);
+        currentTarget = checkForTargets();
+
+        agent.SetDestination(currentTarget.position);
+    }
 
 
-        if(results[0].collider.CompareTag("Student"))
+
+    Transform checkForTargets()
+    {
+        Physics2D.CircleCast(this.transform.position, 2f, new Vector2(0, 0), new ContactFilter2D(), results);
+
+        int closest = 0;
+        float closestDistance = Mathf.Infinity;
+        for (int index = 0; index < results.Length; index++)
         {
-            currentTarget.position = results[0].transform.position;
+            if (results[index].rigidbody != null &&results[index].collider.CompareTag("Student"))
+            {
+                if (checkIfInView(results[index].transform) == true)
+                {
+                    float currentDistance = Vector2.Distance(results[index].transform.position, results[closest].transform.position);
+
+                    if (closestDistance > currentDistance)
+                    {
+                        closestDistance = currentDistance;
+                        closest = index;
+                    }
+                } 
+            }
         }
 
 
+        float rotation = Mathf.Atan2(agent.velocity.y, agent.velocity.x) * Mathf.Rad2Deg;
+        //this.transform.rotation = Quaternion.AngleAxis(rotation -= 90, Vector3.forward);
 
 
-        agent.SetDestination(currentTarget.position);
+        return results[closest].transform;
+    }
+
+    bool checkIfInView(Transform t_transform)
+    {
+        float angle = Vector2.Angle(this.transform.position, t_transform.position);
+
+        float forwardAngle = Mathf.Atan2(agent.velocity.y, agent.velocity.x) * Mathf.Rad2Deg;
+        forwardAngle += 270;
+
+        if(angle < forwardAngle + 45 && angle > forwardAngle - 45 )
+        {
+            Debug.Log("student: " + angle + " facing: " + forwardAngle);
+
+            return true;
+        }
+        return false;
     }
 }
