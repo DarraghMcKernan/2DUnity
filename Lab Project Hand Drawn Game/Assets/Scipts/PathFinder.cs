@@ -9,9 +9,16 @@ using static UnityEngine.GraphicsBuffer;
 public class PathFinder : MonoBehaviour
 {
     //[SerializeField] Transform targets;
-    Transform currentTarget;
+    Transform currentTarget = null;
+    public Transform fallBack;
     NavMeshAgent agent;
     RaycastHit2D[] results;
+
+    float cooldown = 0.3f; // Cooldown time in seconds
+    float lastUpdateTime;
+
+    ContactFilter2D contactFilter;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,62 +28,104 @@ public class PathFinder : MonoBehaviour
 
         results = new RaycastHit2D[20];
 
+        int studentLayerMask = 1 << LayerMask.NameToLayer("StudentLayer");
+        contactFilter = new ContactFilter2D();
+        contactFilter.layerMask = studentLayerMask;
+
+
         //this.transform.position = new Vector3(UnityEngine.Random.Range(1.0f, 6.0f), UnityEngine.Random.Range(4.0f, 0.0f), 0);
     }
 
     void Update()
     {
-        currentTarget = checkForTargets();
-
-        agent.SetDestination(currentTarget.position);
+        if (Time.time - lastUpdateTime >= cooldown)
+        {
+            currentTarget = checkForTargets();
+            if (currentTarget == null)
+            {
+                currentTarget = fallBack;
+            }
+            agent.SetDestination(currentTarget.position);
+            //Debug.Log("Current Target: " + currentTarget);
+            
+            lastUpdateTime = Time.time;
+        }
+        if (currentTarget != null)
+        {
+            RotateTowardsTarget(currentTarget.position);
+        }
     }
 
 
 
     Transform checkForTargets()
     {
-        Physics2D.CircleCast(this.transform.position, 2f, new Vector2(0, 0), new ContactFilter2D(), results);
+        Physics2D.CircleCast(transform.position, 10f, Vector2.zero, new ContactFilter2D(), results);
 
-        int closest = 0;
+        int closest = -1;
         float closestDistance = Mathf.Infinity;
+
         for (int index = 0; index < results.Length; index++)
         {
-            if (results[index].rigidbody != null &&results[index].collider.CompareTag("Student"))
+            if (results[index].rigidbody != null)
             {
-                if (checkIfInView(results[index].transform) == true)
+                if (results[index].collider.CompareTag("Student"))
                 {
-                    float currentDistance = Vector2.Distance(results[index].transform.position, results[closest].transform.position);
-
-                    if (closestDistance > currentDistance)
+                    if (checkIfInView(results[index].transform) == true && RaycastToCheckObstacle(this.transform.position, results[index].transform.position) == true)
                     {
-                        closestDistance = currentDistance;
-                        closest = index;
+                        float currentDistance = Vector2.Distance(results[index].transform.position, transform.position);
+                        if(currentDistance > 7f)
+                        {
+                            //Debug.Log("Too far away");
+                        }
+                        else if (closest == -1 || closestDistance > currentDistance) 
+                        {
+                            closestDistance = currentDistance;
+                            closest = index;
+                        }
                     }
-                } 
+                }
             }
         }
 
-
-        float rotation = Mathf.Atan2(agent.velocity.y, agent.velocity.x) * Mathf.Rad2Deg;
-        //this.transform.rotation = Quaternion.AngleAxis(rotation -= 90, Vector3.forward);
-
-
-        return results[closest].transform;
+        if (closest != -1)
+        {
+            return results[closest].transform;
+        }
+        else return null;
     }
+
 
     bool checkIfInView(Transform t_transform)
     {
-        float angle = Vector2.Angle(this.transform.position, t_transform.position);
+        Vector3 directionToTarget = t_transform.position - transform.position;
+        float angleToTarget = Vector3.Angle(transform.up, directionToTarget);
 
-        float forwardAngle = Mathf.Atan2(agent.velocity.y, agent.velocity.x) * Mathf.Rad2Deg;
-        forwardAngle += 270;
-
-        if(angle < forwardAngle + 45 && angle > forwardAngle - 45 )
+        // Check if the angle to the target is within 45 degrees
+        if (angleToTarget <= 30f)
         {
-            Debug.Log("student: " + angle + " facing: " + forwardAngle);
-
             return true;
         }
+
         return false;
+    }
+
+    void RotateTowardsTarget(Vector3 targetPosition)
+    {
+        Vector3 direction = targetPosition - transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f);
+    }
+
+    bool RaycastToCheckObstacle(Vector3 start, Vector3 end)
+    {
+        RaycastHit2D hit = Physics2D.Linecast(start, end);
+
+        if (hit.collider.CompareTag("Walls"))
+        {
+            return false;
+        }
+        else return true;
     }
 }
