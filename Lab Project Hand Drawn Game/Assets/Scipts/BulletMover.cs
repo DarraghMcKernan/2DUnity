@@ -6,10 +6,13 @@ public class BulletMover : MonoBehaviour
 {
     public int speed = 1;
     public int deletionTimer = 60;
+    public int addScore = 20;
+    public int loseScore = -50;
+    //private PlayerController player;
     // Start is called before the first frame update
     void Start()
     {
-        
+        //player = GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
@@ -36,11 +39,13 @@ public class BulletMover : MonoBehaviour
         if(collision.gameObject.CompareTag("Zombie"))
         {
             Destroy(collision.gameObject);
+            PlayerController.score += 20;
             Destroy(this.gameObject);
         }
         if (collision.gameObject.CompareTag("Student"))
         {
             Destroy(collision.gameObject);
+            PlayerController.score -= 50;
             Destroy(this.gameObject);
         }
         if (collision.gameObject.CompareTag("Player"))

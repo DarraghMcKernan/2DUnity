@@ -3223,7 +3223,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 834, y: 515}
+  m_AnchoredPosition: {x: 834, y: 500}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &365566830
@@ -12824,7 +12824,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   seatHolder: {fileID: 1878316125}
-  compassNeedle: {fileID: 1956688029}
+  clockNeedle: {fileID: 1956688029}
   classTimer: 0
   timeBetweenClasses: 1200
 --- !u!4 &720554195
@@ -26271,7 +26271,7 @@ GameObject:
   - component: {fileID: 1956688030}
   - component: {fileID: 1956688029}
   m_Layer: 5
-  m_Name: CompassNeedle
+  m_Name: ClockHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27212,7 +27212,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 29738664127056448, guid: 673f8efa4eb3b2a45a3bf17ab6be02e9, type: 3}
-  maxBulletCooldown: 5
+  maxBulletCooldown: 15
+  scoreText: {fileID: 2024883919}
+  livesText: {fileID: 2024883919}
 --- !u!114 &1997272698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27575,7 +27577,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -839, y: 511.6}
+  m_AnchoredPosition: {x: -839, y: 500}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2024883919

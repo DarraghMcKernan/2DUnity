@@ -173,3 +173,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 15
   deletionTimer: 80
+  addScore: 20
+  loseScore: -50

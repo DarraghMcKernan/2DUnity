@@ -9,7 +9,7 @@ public class SeatSelector : MonoBehaviour
 {
     public GameObject seatHolder;
 
-    public Image compassNeedle;
+    public Image clockNeedle;
 
     private List<Transform> chairs = new List<Transform>();
 
@@ -59,6 +59,16 @@ public class SeatSelector : MonoBehaviour
         {
             leaveAllSeats();
         }
+
+
+        // Calculate the rotation angle per fixed update
+        float rotationAngle = 360.0f / timeBetweenClasses;
+
+        // Calculate the current rotation angle based on the fixed update count
+        float currentRotation = rotationAngle * classTimer;
+
+        // Apply rotation to the clock hand
+        clockNeedle.gameObject.transform.rotation = Quaternion.Euler(0f, 0f, currentRotation);
     }
 
     public Vector3 takeSeat()

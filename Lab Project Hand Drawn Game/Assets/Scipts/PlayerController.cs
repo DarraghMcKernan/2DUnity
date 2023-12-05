@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,14 +11,22 @@ public class PlayerController : MonoBehaviour
 
     public GameObject bulletPrefab;
     private int bulletCooldownTimer = 0;
-    public int maxBulletCooldown = 10;
+    public int maxBulletCooldown = 40;
+
+    public static int score = 0;
+
+    private int lives = 3;
 
     private Vector3 direction;
+
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI livesText;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        scoreText.text = "Score: " + score;
+        livesText.text = "Lives: " + lives;
     }
 
     // Update is called once per frame
@@ -31,6 +40,9 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        scoreText.text = "Score: " + score;
+        livesText.text = "Lives: " + lives; 
+
         Vector3 movement = new Vector2 (movementX, movementY);
 
         gameObject.transform.position = gameObject.transform.position + (movement/8);
@@ -46,6 +58,12 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+    public void changeScore(int t_score)
+    {
+        score += t_score;
+    }
+
 
     private void OnMove(InputValue movementValue)
     {
