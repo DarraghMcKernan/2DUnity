@@ -2,11 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class SeatSelector : MonoBehaviour
 {
     public GameObject seatHolder;
+
+    public Image compassNeedle;
 
     private List<Transform> chairs = new List<Transform>();
 
@@ -39,6 +42,7 @@ public class SeatSelector : MonoBehaviour
         }
 
         classTimer = timeBetweenClasses;
+        //compassNeedle.gameObject.transform.eulerAngles = new Vector3(0,0,-45);
     }
 
     private void FixedUpdate()

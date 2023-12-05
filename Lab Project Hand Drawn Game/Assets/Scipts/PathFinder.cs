@@ -28,10 +28,10 @@ public class PathFinder : MonoBehaviour
 
         results = new RaycastHit2D[20];
 
-        int studentLayerMask = 1 << LayerMask.NameToLayer("StudentLayer");
+        int studentLayerMask = 64;
         contactFilter = new ContactFilter2D();
         contactFilter.layerMask = studentLayerMask;
-
+        contactFilter.useLayerMask = true;
 
         //this.transform.position = new Vector3(UnityEngine.Random.Range(1.0f, 6.0f), UnityEngine.Random.Range(4.0f, 0.0f), 0);
     }
@@ -60,7 +60,7 @@ public class PathFinder : MonoBehaviour
 
     Transform checkForTargets()
     {
-        Physics2D.CircleCast(transform.position, 10f, Vector2.zero, new ContactFilter2D(), results);
+        Physics2D.CircleCast(transform.position, 10f, Vector2.zero, contactFilter, results);
 
         int closest = -1;
         float closestDistance = Mathf.Infinity;
@@ -69,20 +69,17 @@ public class PathFinder : MonoBehaviour
         {
             if (results[index].rigidbody != null)
             {
-                if (results[index].collider.CompareTag("Student"))
+                if (checkIfInView(results[index].transform) == true && RaycastToCheckObstacle(this.transform.position, results[index].transform.position) == true)
                 {
-                    if (checkIfInView(results[index].transform) == true && RaycastToCheckObstacle(this.transform.position, results[index].transform.position) == true)
+                    float currentDistance = Vector2.Distance(results[index].transform.position, transform.position);
+                    if (currentDistance > 7f)
                     {
-                        float currentDistance = Vector2.Distance(results[index].transform.position, transform.position);
-                        if(currentDistance > 7f)
-                        {
-                            //Debug.Log("Too far away");
-                        }
-                        else if (closest == -1 || closestDistance > currentDistance) 
-                        {
-                            closestDistance = currentDistance;
-                            closest = index;
-                        }
+                        //Debug.Log("Too far away");
+                    }
+                    else if (closest == -1 || closestDistance > currentDistance)
+                    {
+                        closestDistance = currentDistance;
+                        closest = index;
                     }
                 }
             }
