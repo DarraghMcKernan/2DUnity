@@ -5,12 +5,13 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.AI;
 using static UnityEngine.GraphicsBuffer;
+using Random = UnityEngine.Random;
 
 public class PathFinder : MonoBehaviour
 {
     //[SerializeField] Transform targets;
     Transform currentTarget = null;
-    public Transform fallBack;
+    private Vector3 fallBack;
     NavMeshAgent agent;
     RaycastHit2D[] results;
 
@@ -33,6 +34,7 @@ public class PathFinder : MonoBehaviour
         contactFilter.layerMask = studentLayerMask;
         contactFilter.useLayerMask = true;
 
+        fallBack = new Vector3(Random.Range(10.0f, -10.0f), Random.Range(4.0f, -4.0f), 0);
         //this.transform.position = new Vector3(UnityEngine.Random.Range(1.0f, 6.0f), UnityEngine.Random.Range(4.0f, 0.0f), 0);
     }
 
@@ -40,10 +42,11 @@ public class PathFinder : MonoBehaviour
     {
         if (Time.time - lastUpdateTime >= cooldown)
         {
+            //fallBack = new Vector3(Random.Range(10.0f, -10.0f), Random.Range(4.0f, -4.0f), 0);
             currentTarget = checkForTargets();
             if (currentTarget == null)
             {
-                currentTarget = fallBack;
+                currentTarget.transform.position = new Vector3(Random.Range(10.0f, -10.0f), Random.Range(4.0f, -4.0f), 0);
             }
             agent.SetDestination(currentTarget.position);
             //Debug.Log("Current Target: " + currentTarget);
@@ -124,5 +127,20 @@ public class PathFinder : MonoBehaviour
             return false;
         }
         else return true;
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Student"))
+        {
+            GameManager.studentsAlive--;
+            Destroy(collision.gameObject);
+            Debug.Log(GameManager.studentsAlive);
+        }
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            PlayerController.lives--;
+            Destroy(this.gameObject);
+        }
     }
 }

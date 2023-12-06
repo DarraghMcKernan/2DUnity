@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
 
     public static int score = 0;
 
-    private int lives = 3;
+    public static int lives = 3;
 
     private Vector3 direction;
 
