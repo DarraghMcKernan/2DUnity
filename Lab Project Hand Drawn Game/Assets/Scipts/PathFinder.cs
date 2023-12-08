@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 public class PathFinder : MonoBehaviour
 {
     //[SerializeField] Transform targets;
-    Transform currentTarget = null;
+    Vector3 currentTarget = new Vector3(0,0,0);
     private Vector3 fallBack;
     NavMeshAgent agent;
     RaycastHit2D[] results;
@@ -34,7 +34,7 @@ public class PathFinder : MonoBehaviour
         contactFilter.layerMask = studentLayerMask;
         contactFilter.useLayerMask = true;
 
-        fallBack = new Vector3(Random.Range(10.0f, -10.0f), Random.Range(4.0f, -4.0f), 0);
+        fallBack = new Vector3(Random.Range(10.0f, -8.0f), Random.Range(4.0f, -4.0f), 0);
         //this.transform.position = new Vector3(UnityEngine.Random.Range(1.0f, 6.0f), UnityEngine.Random.Range(4.0f, 0.0f), 0);
     }
 
@@ -42,26 +42,26 @@ public class PathFinder : MonoBehaviour
     {
         if (Time.time - lastUpdateTime >= cooldown)
         {
-            //fallBack = new Vector3(Random.Range(10.0f, -10.0f), Random.Range(4.0f, -4.0f), 0);
+            fallBack = new Vector3(Random.Range(10.0f, -10.0f), Random.Range(4.0f, -4.0f), 0);
             currentTarget = checkForTargets();
             if (currentTarget == null)
             {
-                currentTarget.transform.position = new Vector3(Random.Range(10.0f, -10.0f), Random.Range(4.0f, -4.0f), 0);
+                currentTarget = new Vector3(0, 0, 0);//new Vector3(Random.Range(6.0f, -6.0f), Random.Range(4.0f, -4.0f), 0);
             }
-            agent.SetDestination(currentTarget.position);
+            agent.SetDestination(currentTarget);
             //Debug.Log("Current Target: " + currentTarget);
             
             lastUpdateTime = Time.time;
         }
         if (currentTarget != null)
         {
-            RotateTowardsTarget(currentTarget.position);
+            RotateTowardsTarget(currentTarget);
         }
     }
 
 
 
-    Transform checkForTargets()
+    Vector3 checkForTargets()
     {
         Physics2D.CircleCast(transform.position, 10f, Vector2.zero, contactFilter, results);
 
@@ -90,9 +90,9 @@ public class PathFinder : MonoBehaviour
 
         if (closest != -1)
         {
-            return results[closest].transform;
+            return results[closest].transform.position;
         }
-        else return null;
+        else return new Vector3(0,0,0);
     }
 
 
@@ -135,11 +135,12 @@ public class PathFinder : MonoBehaviour
         {
             GameManager.studentsAlive--;
             Destroy(collision.gameObject);
-            Debug.Log(GameManager.studentsAlive);
+            GameManager.studentsAlive--;
         }
         if (collision.gameObject.CompareTag("Player"))
         {
             PlayerController.lives--;
+            GameManager.zombiesAlive--;
             Destroy(this.gameObject);
         }
     }

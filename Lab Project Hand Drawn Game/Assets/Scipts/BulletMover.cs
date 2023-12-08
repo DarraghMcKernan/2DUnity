@@ -40,12 +40,14 @@ public class BulletMover : MonoBehaviour
         {
             Destroy(collision.gameObject);
             PlayerController.score += 20;
+            GameManager.zombiesAlive--;
             Destroy(this.gameObject);
         }
         if (collision.gameObject.CompareTag("Student"))
         {
             Destroy(collision.gameObject);
             PlayerController.score -= 50;
+            GameManager.studentsAlive--;
             Destroy(this.gameObject);
         }
         if (collision.gameObject.CompareTag("Player"))
